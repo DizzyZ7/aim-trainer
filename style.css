@@ -1,9 +1,13 @@
 :root {
-  --bg-light: #f5f6f7;
-  --bg-dark: #1e1e1e;
+  --bg-light: #f2f4f7;
+  --bg-dark: #1e1f22;
   --accent: #4c8bf5;
+  --success: #35c759;
   --text-light: #111;
   --text-dark: #f5f5f5;
+  --card-light: #fff;
+  --card-dark: #2c2c2c;
+  --border-radius: 12px;
 }
 
 body {
@@ -27,47 +31,75 @@ body {
 }
 
 h1 {
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+h2 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  margin: 8px 0 6px;
+  font-size: 14px;
+  color: #666;
 }
 
 .options {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
   margin-bottom: 10px;
 }
 
 button {
   cursor: pointer;
   border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 10px;
+  padding: 10px 14px;
   background: var(--accent);
   color: white;
   font-size: 14px;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 }
 
 button:hover {
-  opacity: 0.85;
+  opacity: 0.9;
+}
+
+button.selected {
+  background: var(--success);
+  transform: scale(1.05);
+}
+
+button.dimmed {
+  opacity: 0.5;
+}
+
+.main-btn {
+  margin-top: 10px;
+  background: var(--accent);
+  font-size: 16px;
+  padding: 12px 20px;
 }
 
 #hud {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 #game-area {
   position: relative;
   width: 100%;
   aspect-ratio: 1/1;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   overflow: hidden;
-  background: rgba(0,0,0,0.05);
-  margin-bottom: 12px;
+  background: var(--card-light);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .target {
@@ -93,5 +125,5 @@ body.dark {
 }
 
 body.dark #game-area {
-  background: rgba(255,255,255,0.05);
+  background: var(--card-dark);
 }
