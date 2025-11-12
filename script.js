@@ -3,31 +3,54 @@ const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
 const bestEl = document.getElementById("best");
 const startBtn = document.getElementById("start-btn");
+const menu = document.getElementById("menu");
+const hud = document.getElementById("hud");
 
 let score = 0;
 let timeLeft = 30;
+let targetSize = 48;
 let timer;
 let gameRunning = false;
 
-// Загружаем лучший результат
 let bestScore = localStorage.getItem("aim_best") || 0;
 bestEl.textContent = bestScore;
 
-// Адаптация к Telegram теме
 if (window.Telegram && Telegram.WebApp) {
   Telegram.WebApp.ready();
-  const theme = Telegram.WebApp.colorScheme;
-  if (theme === "dark") document.body.classList.add("dark");
+  if (Telegram.WebApp.colorScheme === "dark") {
+    document.body.classList.add("dark");
+  }
 }
+
+document.querySelectorAll(".difficulty").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".difficulty").forEach(b => b.style.opacity = 0.5);
+    btn.style.opacity = 1;
+    targetSize = parseInt(btn.dataset.size);
+  });
+});
+
+document.querySelectorAll(".duration").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".duration").forEach(b => b.style.opacity = 0.5);
+    btn.style.opacity = 1;
+    timeLeft = parseInt(btn.dataset.time);
+  });
+});
+
+startBtn.addEventListener("click", startGame);
 
 function startGame() {
   if (gameRunning) return;
   gameRunning = true;
   score = 0;
-  timeLeft = 30;
   scoreEl.textContent = score;
   timerEl.textContent = timeLeft;
-  startBtn.style.display = "none";
+
+  menu.classList.add("hidden");
+  hud.classList.remove("hidden");
+  gameArea.classList.remove("hidden");
+
   spawnTarget();
   timer = setInterval(updateTimer, 1000);
 }
@@ -36,7 +59,6 @@ function endGame() {
   gameRunning = false;
   clearInterval(timer);
   gameArea.innerHTML = "";
-  startBtn.style.display = "inline-block";
 
   if (score > bestScore) {
     bestScore = score;
@@ -45,6 +67,10 @@ function endGame() {
   }
 
   alert(`⏱ Время вышло!\nСчёт: ${score}\nРекорд: ${bestScore}`);
+
+  menu.classList.remove("hidden");
+  hud.classList.add("hidden");
+  gameArea.classList.add("hidden");
 }
 
 function updateTimer() {
@@ -58,12 +84,11 @@ function spawnTarget() {
 
   const target = document.createElement("div");
   target.classList.add("target");
+  target.style.width = `${targetSize}px`;
+  target.style.height = `${targetSize}px`;
 
-  const size = 48;
-  const areaRect = gameArea.getBoundingClientRect();
-
-  const x = Math.random() * (gameArea.clientWidth - size);
-  const y = Math.random() * (gameArea.clientHeight - size);
+  const x = Math.random() * (gameArea.clientWidth - targetSize);
+  const y = Math.random() * (gameArea.clientHeight - targetSize);
 
   target.style.left = `${x}px`;
   target.style.top = `${y}px`;
@@ -77,7 +102,6 @@ function spawnTarget() {
 
   gameArea.appendChild(target);
 
-  // Удаляем через 1.5 сек, если не кликнули
   setTimeout(() => {
     if (target.parentNode) {
       target.remove();
@@ -85,5 +109,3 @@ function spawnTarget() {
     }
   }, 1500);
 }
-
-startBtn.addEventListener("click", startGame);
