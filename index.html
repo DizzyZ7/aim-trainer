@@ -12,27 +12,28 @@
     <h1>DizZy Aim Trainer 🎯</h1>
 
     <div id="menu">
-      <p>Выбери сложность:</p>
-      <div class="options">
-        <button class="difficulty" data-size="60">🔵 Легко</button>
-        <button class="difficulty" data-size="40">🟠 Средне</button>
-        <button class="difficulty" data-size="28">🔴 Сложно</button>
+      <h2>Настройки игры</h2>
+      <p class="subtitle">Выбери <b>сложность</b>:</p>
+      <div class="options" id="difficulty-options">
+        <button class="difficulty" data-size="60" data-speed="1000">Легко 🟢</button>
+        <button class="difficulty" data-size="40" data-speed="500">Средне 🟠</button>
+        <button class="difficulty" data-size="28" data-speed="250">Сложно 🔴</button>
       </div>
 
-      <p>Выбери длительность:</p>
-      <div class="options">
+      <p class="subtitle">Выбери <b>время игры</b>:</p>
+      <div class="options" id="duration-options">
         <button class="duration" data-time="30">30 сек</button>
         <button class="duration" data-time="60">60 сек</button>
         <button class="duration" data-time="90">90 сек</button>
       </div>
 
-      <button id="start-btn">🎯 Начать игру</button>
+      <button id="start-btn" class="main-btn">🎮 Начать игру</button>
     </div>
 
     <div id="hud" class="hidden">
-      <span>Счёт: <b id="score">0</b></span>
-      <span>⏱ <b id="timer">30</b> сек</span>
-      <span>🏆 Рекорд: <b id="best">0</b></span>
+      <div class="hud-item">Счёт: <b id="score">0</b></div>
+      <div class="hud-item">⏱ <b id="timer">30</b> сек</div>
+      <div class="hud-item">🏆 Рекорд: <b id="best">0</b></div>
     </div>
 
     <div id="game-area" class="hidden"></div>
