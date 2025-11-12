@@ -9,12 +9,14 @@ const hud = document.getElementById("hud");
 let score = 0;
 let timeLeft = 30;
 let targetSize = 48;
+let targetSpeed = 1000;
 let timer;
 let gameRunning = false;
 
 let bestScore = localStorage.getItem("aim_best") || 0;
 bestEl.textContent = bestScore;
 
+// Telegram тёмная тема
 if (window.Telegram && Telegram.WebApp) {
   Telegram.WebApp.ready();
   if (Telegram.WebApp.colorScheme === "dark") {
@@ -22,18 +24,29 @@ if (window.Telegram && Telegram.WebApp) {
   }
 }
 
+// Сложность
 document.querySelectorAll(".difficulty").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".difficulty").forEach(b => b.style.opacity = 0.5);
-    btn.style.opacity = 1;
+    document.querySelectorAll(".difficulty").forEach(b => {
+      b.classList.remove("selected");
+      b.classList.add("dimmed");
+    });
+    btn.classList.add("selected");
+    btn.classList.remove("dimmed");
     targetSize = parseInt(btn.dataset.size);
+    targetSpeed = parseInt(btn.dataset.speed);
   });
 });
 
+// Время
 document.querySelectorAll(".duration").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".duration").forEach(b => b.style.opacity = 0.5);
-    btn.style.opacity = 1;
+    document.querySelectorAll(".duration").forEach(b => {
+      b.classList.remove("selected");
+      b.classList.add("dimmed");
+    });
+    btn.classList.add("selected");
+    btn.classList.remove("dimmed");
     timeLeft = parseInt(btn.dataset.time);
   });
 });
@@ -89,7 +102,6 @@ function spawnTarget() {
 
   const x = Math.random() * (gameArea.clientWidth - targetSize);
   const y = Math.random() * (gameArea.clientHeight - targetSize);
-
   target.style.left = `${x}px`;
   target.style.top = `${y}px`;
 
@@ -107,5 +119,5 @@ function spawnTarget() {
       target.remove();
       spawnTarget();
     }
-  }, 1500);
+  }, targetSpeed);
 }
