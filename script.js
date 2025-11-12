@@ -1,3 +1,12 @@
+const gameArea = document.getElementById("game-area");
+const scoreEl = document.getElementById("score");
+const timerEl = document.getElementById("timer");
+const bestEl = document.getElementById("best");
+const startBtn = document.getElementById("start-btn");
+const menu = document.getElementById("menu");
+const hud = document.getElementById("hud");
+const endScreen = document.getElementById("end-screen");
+
 let score = 0;
 let timeLeft = 30;
 let targetSize = 48;
@@ -9,24 +18,36 @@ let endlessMode = false;
 let bestScore = localStorage.getItem("aim_best") || 0;
 bestEl.textContent = bestScore;
 
-// Telegram тема
+// Telegram тёмная тема
 if (window.Telegram && Telegram.WebApp) {
   Telegram.WebApp.ready();
   if (Telegram.WebApp.colorScheme === "dark") document.body.classList.add("dark");
 }
 
-// выбор режима
+// 🔹 Выбор режима
 document.querySelectorAll(".mode").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".mode").forEach(b => b.classList.remove("selected"));
     btn.classList.add("selected");
+
     endlessMode = btn.dataset.mode === "endless";
+
+    // Показываем / скрываем блоки настроек
     document.getElementById("difficulty-block").style.display = endlessMode ? "none" : "block";
     document.getElementById("duration-block").style.display = endlessMode ? "none" : "block";
+
+    // Когда выбираем бесконечный — ставим стартовые значения
+    if (endlessMode) {
+      targetSize = 48;
+      targetSpeed = 1500;
+      timerEl.textContent = "∞";
+    } else {
+      timerEl.textContent = timeLeft;
+    }
   });
 });
 
-// сложность
+// 🔹 Сложность
 document.querySelectorAll(".difficulty").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".difficulty").forEach(b => b.classList.remove("selected"));
@@ -36,7 +57,7 @@ document.querySelectorAll(".difficulty").forEach(btn => {
   });
 });
 
-// время
+// 🔹 Время
 document.querySelectorAll(".duration").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".duration").forEach(b => b.classList.remove("selected"));
@@ -46,7 +67,12 @@ document.querySelectorAll(".duration").forEach(btn => {
 });
 
 startBtn.addEventListener("click", startGame);
-document.getElementById("retry-btn").addEventListener("click", () => location.reload());
+document.getElementById("retry-btn").addEventListener("click", restartGame);
+
+function restartGame() {
+  endScreen.classList.add("hidden");
+  menu.classList.remove("hidden");
+}
 
 function startGame() {
   if (gameRunning) return;
@@ -58,7 +84,7 @@ function startGame() {
   menu.classList.add("hidden");
   hud.classList.remove("hidden");
   gameArea.classList.remove("hidden");
-  document.getElementById("end-screen").classList.add("hidden");
+  endScreen.classList.add("hidden");
 
   spawnTarget();
   if (!endlessMode) timer = setInterval(updateTimer, 1000);
@@ -78,7 +104,7 @@ function endGame() {
   document.getElementById("final-best").textContent = bestScore;
   hud.classList.add("hidden");
   gameArea.classList.add("hidden");
-  document.getElementById("end-screen").classList.remove("hidden");
+  endScreen.classList.remove("hidden");
 }
 
 function updateTimer() {
@@ -105,7 +131,7 @@ function spawnTarget() {
     scoreEl.textContent = score;
     target.remove();
 
-    // ускорение в бесконечном режиме
+    // ускорение бесконечного режима
     if (endlessMode) {
       targetSpeed = Math.max(250, +(targetSpeed - 10).toFixed(2));
     }
@@ -115,11 +141,10 @@ function spawnTarget() {
 
   gameArea.appendChild(target);
 
-  // исчезновение цели
   setTimeout(() => {
     if (target.parentNode) {
       target.remove();
-      if (endlessMode) endGame(); // промах — конец игры
+      if (endlessMode) endGame(); // промах — конец
       else spawnTarget();
     }
   }, targetSpeed);
