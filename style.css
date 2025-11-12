@@ -1,0 +1,89 @@
+:root {
+  --bg-light: #f5f6f7;
+  --bg-dark: #1e1e1e;
+  --accent: #4c8bf5;
+  --text-light: #111;
+  --text-dark: #f5f5f5;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: background 0.3s, color 0.3s;
+}
+
+#app {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  padding: 16px;
+}
+
+h1 {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#hud {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+#game-area {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.05);
+  margin-bottom: 12px;
+}
+
+.target {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: transform 0.1s ease, opacity 0.2s;
+}
+
+.target:active {
+  transform: scale(0.8);
+  opacity: 0.7;
+}
+
+#start-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#start-btn:hover {
+  opacity: 0.9;
+}
+
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+body.dark #game-area {
+  background: rgba(255,255,255,0.05);
+}
