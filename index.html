@@ -9,16 +9,33 @@
 </head>
 <body>
   <div id="app">
-    <h1>Aim Trainer 🎯</h1>
-    <div id="hud">
+    <h1>DizZy Aim Trainer 🎯</h1>
+
+    <div id="menu">
+      <p>Выбери сложность:</p>
+      <div class="options">
+        <button class="difficulty" data-size="60">🔵 Легко</button>
+        <button class="difficulty" data-size="40">🟠 Средне</button>
+        <button class="difficulty" data-size="28">🔴 Сложно</button>
+      </div>
+
+      <p>Выбери длительность:</p>
+      <div class="options">
+        <button class="duration" data-time="30">30 сек</button>
+        <button class="duration" data-time="60">60 сек</button>
+        <button class="duration" data-time="90">90 сек</button>
+      </div>
+
+      <button id="start-btn">🎯 Начать игру</button>
+    </div>
+
+    <div id="hud" class="hidden">
       <span>Счёт: <b id="score">0</b></span>
       <span>⏱ <b id="timer">30</b> сек</span>
       <span>🏆 Рекорд: <b id="best">0</b></span>
     </div>
 
-    <div id="game-area"></div>
-
-    <button id="start-btn">Начать игру</button>
+    <div id="game-area" class="hidden"></div>
   </div>
 
   <script src="script.js"></script>
